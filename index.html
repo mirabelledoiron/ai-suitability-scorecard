@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Suitability Scorecard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 248px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: #111;
+      color: #fff;
+      padding: 36px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      padding: 0 8px;
+      margin-bottom: 12px;
+    }
+
+    .wf-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: #888;
+      padding: 9px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.35;
+      text-align: left;
+      transition: all 0.15s;
+      width: 100%;
+    }
+    .wf-btn:hover { background: rgba(255,255,255,0.06); color: #ccc; }
+    .wf-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .wf-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: #222;
+      margin: 12px 0;
+    }
+
+    .summary-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: #888;
+      padding: 9px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      text-align: left;
+      transition: all 0.15s;
+      width: 100%;
+    }
+    .summary-btn:hover { background: rgba(255,255,255,0.06); color: #ccc; }
+    .summary-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ── Main ── */
+    .main {
+      padding: 52px 56px 80px;
+      max-width: 780px;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .page-desc {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 40px;
+    }
+
+    /* ── Score header ── */
+    .score-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 18px 24px;
+      margin-bottom: 28px;
+    }
+    .score-big {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      min-width: 56px;
+      transition: color 0.3s;
+    }
+    .score-denom { font-size: 16px; color: #bbb; font-weight: 400; }
+    .score-track {
+      flex: 1;
+      height: 8px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .score-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease, background 0.3s;
+    }
+    .score-status { font-size: 13px; color: #aaa; white-space: nowrap; }
+
+    /* ── Questions ── */
+    .question {
+      background: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 10px;
+    }
+    .q-head {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .q-num {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #bbb;
+      padding-top: 3px;
+      min-width: 20px;
+    }
+    .q-title { font-size: 15px; font-weight: 600; }
+    .q-sub { font-size: 12px; color: #999; margin-top: 3px; line-height: 1.4; }
+    .risk-pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 1px 7px;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .options { display: flex; flex-direction: column; gap: 7px; padding-left: 34px; }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #ebebeb;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .opt:hover { border-color: #d0d0d0; background: #fafafa; }
+    .opt.selected { border-color: #111; background: #f8f8f8; }
+
+    .opt-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 2px solid #d0d0d0;
+      flex-shrink: 0;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .opt.selected .opt-dot {
+      border-color: #111;
+      background: #111;
+    }
+    .opt.selected .opt-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .opt-text { font-size: 13px; flex: 1; line-height: 1.4; }
+    .opt-score {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ccc;
+      min-width: 16px;
+      text-align: right;
+      transition: color 0.15s;
+    }
+    .opt.selected .opt-score { color: #111; }
+
+    /* ── Result card ── */
+    .result {
+      border-radius: 12px;
+      padding: 28px;
+      margin-top: 24px;
+    }
+    .result-tag {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+    .result-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .result-body {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #444;
+    }
+    .result-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 18px;
+    }
+    .chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .chip-5 { background: #dcfce7; color: #166534; }
+    .chip-3 { background: #fef9c3; color: #854d0e; }
+    .chip-1 { background: #fee2e2; color: #991b1b; }
+
+    .override-note {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .wf-intro {
+      background: #f0f0ec;
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #444;
+      margin-bottom: 24px;
+    }
+
+    .q-hint {
+      font-size: 11.5px;
+      color: #aaa;
+      margin-top: 5px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ── Methodology page ── */
+    .method-section {
+      background: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin-bottom: 12px;
+    }
+    .method-section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .method-section p {
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 10px;
+    }
+    .method-section p:last-child { margin-bottom: 0; }
+    .source-card {
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 8px;
+    }
+    .source-card:last-child { margin-bottom: 0; }
+    .source-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .source-meta {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+    .source-body {
+      font-size: 12.5px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .criteria-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .criteria-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #999;
+      padding: 0 12px 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .criteria-table td {
+      padding: 10px 12px 10px 0;
+      vertical-align: top;
+      border-bottom: 1px solid #f7f7f7;
+      color: #444;
+      line-height: 1.5;
+    }
+    .criteria-table td:first-child { font-weight: 600; color: #1a1a1a; white-space: nowrap; }
+    .criteria-table tr:last-child td { border-bottom: none; }
+    .risk-inline {
+      font-size: 10px;
+      font-weight: 700;
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 1px 6px;
+      border-radius: 20px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .threshold-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f7f7f7;
+      font-size: 13px;
+    }
+    .threshold-row:last-child { border-bottom: none; }
+    .threshold-score {
+      font-size: 15px;
+      font-weight: 800;
+      min-width: 44px;
+    }
+    .threshold-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      min-width: 140px;
+      text-align: center;
+    }
+    .threshold-desc { font-size: 12.5px; color: #666; line-height: 1.5; }
+
+    /* ── Summary view ── */
+    .summary-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .summary-row {
+      background: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: 1fr 80px 160px;
+      gap: 16px;
+      align-items: center;
+    }
+    .summary-row.incomplete { opacity: 0.4; }
+    .summary-wf-name { font-size: 14px; font-weight: 600; }
+    .summary-wf-desc { font-size: 12px; color: #999; margin-top: 2px; }
+    .summary-score { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .summary-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 5px 12px;
+      border-radius: 100px;
+      text-align: center;
+    }
+    .summary-pending { font-size: 12px; color: #bbb; }
+
+    /* ── Color themes ── */
+    /* no-fit */
+    .theme-no-fit .result { background: #fff5f5; }
+    .theme-no-fit .result-tag { color: #c53030; }
+    .theme-no-fit .result-title { color: #1a1a1a; }
+    .theme-no-fit .score-big { color: #e53e3e; }
+    .theme-no-fit .score-fill { background: #fc8181; }
+    .theme-no-fit-badge { background: #fee2e2; color: #991b1b; }
+    .theme-no-fit-label { background: #fee2e2; color: #991b1b; }
+    .theme-no-fit-score { color: #e53e3e; }
+
+    /* automation */
+    .theme-automation .result { background: #fffbeb; }
+    .theme-automation .result-tag { color: #c05621; }
+    .theme-automation .score-big { color: #dd6b20; }
+    .theme-automation .score-fill { background: #f6ad55; }
+    .theme-automation-badge { background: #fed7aa; color: #9a3412; }
+    .theme-automation-label { background: #fed7aa; color: #9a3412; }
+    .theme-automation-score { color: #dd6b20; }
+
+    /* ai-assisted */
+    .theme-ai-assisted .result { background: #eff6ff; }
+    .theme-ai-assisted .result-tag { color: #1d4ed8; }
+    .theme-ai-assisted .score-big { color: #2563eb; }
+    .theme-ai-assisted .score-fill { background: #60a5fa; }
+    .theme-ai-assisted-badge { background: #dbeafe; color: #1e40af; }
+    .theme-ai-assisted-label { background: #dbeafe; color: #1e40af; }
+    .theme-ai-assisted-score { color: #2563eb; }
+
+    /* ai-system */
+    .theme-ai-system .result { background: #f0fdf4; }
+    .theme-ai-system .result-tag { color: #15803d; }
+    .theme-ai-system .score-big { color: #16a34a; }
+    .theme-ai-system .score-fill { background: #4ade80; }
+    .theme-ai-system-badge { background: #dcfce7; color: #166534; }
+    .theme-ai-system-label { background: #dcfce7; color: #166534; }
+    .theme-ai-system-score { color: #16a34a; }
+
+    /* default (unanswered) */
+    .theme-default .score-big { color: #ccc; }
+    .theme-default .score-fill { background: #e5e5e5; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-label">Workflows</div>
+    <div id="wf-nav"></div>
+    <div class="sidebar-divider"></div>
+    <button class="summary-btn" id="summary-btn" onclick="showSummary()">
+      Summary View
+    </button>
+    <button class="summary-btn" id="method-btn" onclick="showMethodology()">
+      Scoring Methodology
+    </button>
+  </aside>
+
+  <main class="main" id="main"></main>
+
+</div>
+
+<script>
+const WORKFLOWS = [
+  { id: 1, title: "Client Proposal / Brief",    desc: "Writing a proposal or brief for a new or existing client" },
+  { id: 2, title: "Client Onboarding",          desc: "Gathering info, setting up tools, running the first meeting" },
+  { id: 3, title: "Design Brief Review",        desc: "Reviewing and responding to a design brief" },
+  { id: 4, title: "Progress Reporting",         desc: "Reporting on project progress to a client" },
+  { id: 5, title: "Social Media Content",       desc: "Creating social media content for a client" },
+  { id: 6, title: "Website & Branding",         desc: "Website and branding services" },
+];
+
+const WORKFLOW_CONTEXT = {
+  1: {
+    intro: "Proposals are high-judgment work — the value is in strategy and positioning, not volume processing. AI can assist with drafting and structuring, but should not own the outcome. Score this honestly: most proposal work scores lower than people expect.",
+    hints: {
+      1: "Most consultants and small agencies write 1–4 proposals per week. Below that, volume doesn't justify AI overhead.",
+      2: "Proposals often start from a call, email, or conversation. Fully freeform input is common — a weak signal for AI.",
+      3: "A proposal's quality is partly subjective. A client may reject a technically correct one. Clear right/wrong rarely applies.",
+      4: "You almost always review a proposal before sending — this criterion typically scores well here.",
+      5: "The hard part is figuring out what to say and how to position. That's judgment, not a throughput problem.",
+      6: "A poor proposal can lose a deal or misrepresent your scope. Reputational and financial stakes are real.",
+      7: "If you have past proposals, pricing frameworks, and case studies, you have rich material to work from.",
+      8: "Most proposals share a similar structure but are meaningfully customized per client — partial standardization.",
+    }
+  },
+  2: {
+    intro: "Onboarding splits into two distinct parts: administrative setup (tool access, contracts, intake forms — highly automatable) and relationship-building (tone, trust, expectations — not). Your score depends heavily on which part you're evaluating.",
+    hints: {
+      1: "Onboarding frequency depends on growth rate. A fast-growing agency might onboard 2–4 clients per week.",
+      2: "If you have a discovery intake form or onboarding checklist, input is structured. Many teams don't yet.",
+      3: "Checklist-style tasks (contracts signed, tools set up) are verifiable. Relationship quality is not.",
+      4: "You're typically present throughout onboarding — error catchability is high.",
+      5: "Admin bottlenecks (sending docs, setting up Slack, sharing credentials) are volume. Relationship bottlenecks are judgment.",
+      6: "A bad onboarding experience damages the client relationship from day one. Moderate-to-high stakes.",
+      7: "After a few clients, you usually have a standard onboarding doc set and process. Data availability improves over time.",
+      8: "The admin parts are fairly standard. The introductory framing and communication style are not.",
+    }
+  },
+  3: {
+    intro: "Brief review is an expertise-driven judgment call. AI can help flag missing information or surface inconsistencies, but reading between the lines — understanding what a client actually wants versus what they wrote — requires contextual experience.",
+    hints: {
+      1: "Brief reviews happen as often as new briefs arrive. In an active agency this can be several per week.",
+      2: "Briefs vary widely in format, depth, and completeness — often freeform or semi-structured at best.",
+      3: "Whether a brief is 'good enough' or 'achievable' requires professional judgment. Hard to verify objectively.",
+      4: "You always review and respond yourself — error catchability is high.",
+      5: "The bottleneck is understanding what the client really wants, not processing speed.",
+      6: "Misreading a brief leads to wrong deliverables, scope creep, or rework. Moderate stakes.",
+      7: "Past briefs and client history help calibrate, but each brief is contextually different.",
+      8: "Responses to briefs are tailored to the client, the project type, and the relationship — low standardization.",
+    }
+  },
+  4: {
+    intro: "Progress reporting is one of the strongest AI candidates in agency and consulting work. It's structured data (milestones, status, hours, blockers) translated into a consistent narrative format — exactly the kind of task where AI reduces time without reducing quality.",
+    hints: {
+      1: "Reports typically go out weekly or bi-weekly per client. Multiply that across 5–10 clients and volume adds up quickly.",
+      2: "If you have a reporting template or PM tool export, input is well-structured. This is a common strength.",
+      3: "Status reports have clear accuracy criteria — milestones either happened or they didn't. Easy to verify.",
+      4: "Reports are reviewed before sending. You catch errors before they reach the client.",
+      5: "The bottleneck is usually writing time — reformatting the same update structure repeatedly. A volume problem AI can help with.",
+      6: "An inaccurate report damages trust but is usually recoverable with a correction. Moderate stakes.",
+      7: "Project data, timelines, and notes live in your PM tools. This is typically rich, structured data.",
+      8: "Reports usually follow a consistent structure: what happened, what's next, any blockers. High standardization.",
+    }
+  },
+  5: {
+    intro: "Social content is high-volume and relatively structured — one of the most validated real AI use cases. The key variable is how much brand voice and creative differentiation matter. Generic content scores high; highly distinctive brand content scores lower.",
+    hints: {
+      1: "Multiple posts per platform per week per client. Across a client roster, volume is almost always high.",
+      2: "Content briefs, brand guidelines, and content calendars provide structure. Most agencies have some form of this.",
+      3: "Performance metrics (engagement, reach, saves) provide verifiability over time. Individual post quality is subjective.",
+      4: "Content is typically approved by you and/or the client before publishing — review is standard.",
+      5: "The bottleneck is usually raw content production — generating enough variation and volume. That's a volume problem.",
+      6: "A poor post can be deleted and corrected. Reputational risk exists but is generally contained and recoverable.",
+      7: "Brand voice documents, past content, campaign briefs, and competitor examples are usually available.",
+      8: "Caption + image + hashtags per platform is a fairly standardized format. Templates are common.",
+    }
+  },
+  6: {
+    intro: "Brand and website work is deeply judgment-driven, highly subjective, and long-lasting in its consequences. AI can assist in research, copywriting drafts, and component generation — but creative direction and strategic decisions must remain human. Expect a low score here. That's correct.",
+    hints: {
+      1: "Brand and website projects are large, complex engagements. Repetition is low — often once per client relationship.",
+      2: "Each project starts differently. Discovery conversations vary significantly in scope and depth.",
+      3: "Brand quality is highly subjective. There is no clear right/wrong — only resonance with the target audience.",
+      4: "Everything is reviewed extensively before client presentation. Catchability is high.",
+      5: "The bottleneck is creative judgment and strategic clarity — not processing speed.",
+      6: "Brand decisions are long-lived, high-visibility, and hard to reverse. Stakes are significant.",
+      7: "Research, competitor analysis, and brand documentation can be gathered — some structured data exists.",
+      8: "Every brand is intended to be unique by definition. Output standardization is low by design.",
+    }
+  },
+};
+
+const CRITERIA = [
+  {
+    id: 1, title: "Repetition Frequency", risk: false,
+    sub: "AI earns its cost through volume — low-frequency tasks don't justify the overhead",
+    opts: [
+      { label: "Happens 10+ times per week", score: 5 },
+      { label: "Happens 3–9 times per week", score: 3 },
+      { label: "Happens 1–2 times per week or irregularly", score: 1 },
+    ]
+  },
+  {
+    id: 2, title: "Input Structure", risk: false,
+    sub: "Consistent inputs produce predictable outputs — freeform inputs don't",
+    opts: [
+      { label: "Consistent format, template, or field structure every time", score: 5 },
+      { label: "Partially structured with some variation", score: 3 },
+      { label: "Freeform, verbal, or varies significantly each time", score: 1 },
+    ]
+  },
+  {
+    id: 3, title: "Output Verifiability", risk: false,
+    sub: "If you can't tell when the AI is wrong, errors become invisible",
+    opts: [
+      { label: "Clear right/wrong — easy for anyone to verify", score: 5 },
+      { label: "Requires domain expertise to verify", score: 3 },
+      { label: "Subjective — no clear standard for correctness", score: 1 },
+    ]
+  },
+  {
+    id: 4, title: "Error Catchability", risk: true,
+    sub: "Errors reaching clients before human review are the most dangerous AI failure mode",
+    opts: [
+      { label: "A human always reviews the output before it is used", score: 5 },
+      { label: "Output is sometimes reviewed depending on context", score: 3 },
+      { label: "Output goes directly to a client, system, or external process", score: 1 },
+    ]
+  },
+  {
+    id: 5, title: "Bottleneck Type", risk: false,
+    sub: "AI solves throughput problems — it does not solve judgment problems",
+    opts: [
+      { label: "Volume — too many instances to handle fast enough", score: 5 },
+      { label: "Mixed — partly volume, partly complexity", score: 3 },
+      { label: "Judgment, relationship, or contextual nuance", score: 1 },
+    ]
+  },
+  {
+    id: 6, title: "Stakes of Error", risk: true,
+    sub: "High-consequence errors outweigh efficiency gains — humans must own high-stakes outputs",
+    opts: [
+      { label: "Internal, low-stakes, and easily corrected", score: 5 },
+      { label: "Moderate impact but recoverable", score: 3 },
+      { label: "Legal, compliance, financial, or reputational consequences", score: 1 },
+    ]
+  },
+  {
+    id: 7, title: "Data Availability", risk: false,
+    sub: "AI needs context — without existing data or examples, you're building blind",
+    opts: [
+      { label: "Rich data, prior examples, or documentation already exists", score: 5 },
+      { label: "Some data exists but incomplete or scattered", score: 3 },
+      { label: "No usable data — starting from scratch", score: 1 },
+    ]
+  },
+  {
+    id: 8, title: "Output Standardization", risk: false,
+    sub: "Templated outputs are AI-friendly — highly personal outputs aren't",
+    opts: [
+      { label: "Output is templated or highly standardized", score: 5 },
+      { label: "Output follows loose conventions but varies", score: 3 },
+      { label: "Highly personal, creative, or relationship-dependent", score: 1 },
+    ]
+  },
+];
+
+const RESULTS = {
+  'no-fit': {
+    tag: 'No AI Fit',
+    title: 'Leave alone or redesign the process first',
+    body: 'Most criteria score low here. The workflow lacks the volume, structure, or verifiability that AI requires. Before any tool conversation, examine whether the workflow itself needs redesigning — adding AI to a broken process makes the process faster and more broken.',
+  },
+  'automation': {
+    tag: 'Automation Candidate',
+    title: 'Traditional automation — not AI',
+    body: 'This workflow has some structure and repeatability, but not enough judgment-free volume for AI to add value over simpler solutions. Consider Zapier, Make, scripts, or platform-native automation first. These are cheaper, more predictable, and easier to govern.',
+  },
+  'ai-assisted': {
+    tag: 'AI-Assisted',
+    title: 'AI can support — but a human must own it',
+    body: 'Strong candidate for AI assistance in drafting, summarizing, classifying, or researching. The human stays in the loop and makes all final decisions. AI reduces effort, not accountability. Start with a copilot approach before considering anything automated.',
+  },
+  'ai-system': {
+    tag: 'AI System Candidate',
+    title: 'Worth building a proper AI workflow',
+    body: 'High volume, structured inputs, verifiable outputs, and manageable error stakes make this a strong candidate for a custom AI system — not just a copilot. Investing in a proper solution here will compound returns. Define success metrics before building.',
+  },
+};
+
+// ── State ──
+let current = 0; // workflow index, or 'summary'
+const answers = {}; // { wfId: { criterionId: score } }
+
+function getA(wfId) { return answers[wfId] || {}; }
+function setA(wfId, cId, score) {
+  if (!answers[wfId]) answers[wfId] = {};
+  answers[wfId][cId] = score;
+  render();
+}
+
+function totalScore(wfId) {
+  return Object.values(getA(wfId)).reduce((s, v) => s + v, 0);
+}
+function answeredCount(wfId) {
+  return Object.keys(getA(wfId)).length;
+}
+function isComplete(wfId) { return answeredCount(wfId) === 8; }
+
+function getCategory(score, a) {
+  const raw = score <= 16 ? 'no-fit'
+    : score <= 24 ? 'automation'
+    : score <= 32 ? 'ai-assisted'
+    : 'ai-system';
+
+  const order = ['no-fit', 'automation', 'ai-assisted', 'ai-system'];
+  const override = a[4] === 1 && a[6] === 1;
+  if (override) {
+    const idx = order.indexOf(raw);
+    return { category: idx > 0 ? order[idx - 1] : raw, override: true };
+  }
+  return { category: raw, override: false };
+}
+
+function themeFor(cat) {
+  return cat ? `theme-${cat}` : 'theme-default';
+}
+
+// ── Nav ──
+function renderNav() {
+  const nav = document.getElementById('wf-nav');
+  nav.innerHTML = WORKFLOWS.map((w, i) => {
+    const done = isComplete(w.id);
+    const count = answeredCount(w.id);
+    const isActive = current === i;
+
+    let badge = '';
+    if (done) {
+      const sc = totalScore(w.id);
+      const { category } = getCategory(sc, getA(w.id));
+      badge = `<span class="wf-badge theme-${category}-badge">${sc}</span>`;
+    } else if (count > 0) {
+      badge = `<span class="wf-badge" style="background:#222;color:#666">${count}/8</span>`;
+    }
+
+    return `<button class="wf-btn ${isActive ? 'active' : ''}" onclick="selectWf(${i})">
+      <span>${w.title}</span>${badge}
+    </button>`;
+  }).join('');
+
+  const summaryBtn = document.getElementById('summary-btn');
+  summaryBtn.classList.toggle('active', current === 'summary');
+  const methodBtn = document.getElementById('method-btn');
+  methodBtn.classList.toggle('active', current === 'methodology');
+}
+
+// ── Workflow view ──
+function renderWorkflow(idx) {
+  const w = WORKFLOWS[idx];
+  const a = getA(w.id);
+  const sc = totalScore(w.id);
+  const count = answeredCount(w.id);
+  const done = count === 8;
+
+  let cat = null, override = false;
+  if (sc > 0) {
+    const res = getCategory(sc, a);
+    cat = res.category;
+    override = res.override;
+  }
+  const theme = themeFor(cat);
+  const pct = done ? (sc / 40) * 100 : (count / 8) * 12.5;
+
+  // Score header
+  const scoreBig = `<div class="score-big ${cat ? `theme-${cat}-score` : ''}" style="${!cat ? 'color:#d0d0d0' : ''}">${sc}</div>`;
+  const fillColor = !cat ? '#e5e5e5' : '';
+  const scoreHeader = `
+    <div class="score-header ${theme}">
+      ${scoreBig}
+      <div class="score-denom">/ 40</div>
+      <div class="score-track">
+        <div class="score-fill" style="width:${pct}%;${fillColor ? `background:${fillColor}` : ''}"></div>
+      </div>
+      <div class="score-status">${count}/8 answered</div>
+    </div>`;
+
+  // Workflow intro
+  const ctx = WORKFLOW_CONTEXT[w.id];
+  const introHtml = ctx
+    ? `<div class="wf-intro">${ctx.intro}</div>`
+    : '';
+
+  // Questions
+  const questions = CRITERIA.map(c => {
+    const sel = a[c.id];
+    const hint = ctx && ctx.hints[c.id]
+      ? `<div class="q-hint">${ctx.hints[c.id]}</div>`
+      : '';
+    const opts = c.opts.map(o => `
+      <label class="opt ${sel === o.score ? 'selected' : ''}" onclick="setA(${w.id},${c.id},${o.score})">
+        <div class="opt-dot"></div>
+        <span class="opt-text">${o.label}</span>
+        <span class="opt-score">${o.score}</span>
+      </label>`).join('');
+
+    return `
+      <div class="question">
+        <div class="q-head">
+          <div class="q-num">${c.id}</div>
+          <div>
+            <div class="q-title">${c.title}${c.risk ? '<span class="risk-pill">⚠ Risk factor</span>' : ''}</div>
+            <div class="q-sub">${c.sub}</div>
+            ${hint}
+          </div>
+        </div>
+        <div class="options">${opts}</div>
+      </div>`;
+  }).join('');
+
+  // Result
+  let resultHtml = '';
+  if (done) {
+    const r = RESULTS[cat];
+    const chips = CRITERIA.map(c => {
+      const s = a[c.id];
+      return `<span class="chip chip-${s}">${c.title.split(' ')[0]}: ${s}</span>`;
+    }).join('');
+    const overrideNote = override
+      ? `<div class="override-note">⚠ Risk override applied — Criteria 4 and 6 both scored 1 (errors reach clients unreviewed, high stakes). Recommendation downgraded one category.</div>`
+      : '';
+    resultHtml = `
+      <div class="result ${theme}">
+        <div class="result-tag">${r.tag}</div>
+        <div class="result-title">${r.title}</div>
+        <div class="result-body">${r.body}</div>
+        <div class="result-chips">${chips}</div>
+        ${overrideNote}
+      </div>`;
+  }
+
+  document.getElementById('main').innerHTML = `
+    <div class="page-title">${w.title}</div>
+    <div class="page-desc">${w.desc}</div>
+    ${scoreHeader}
+    ${introHtml}
+    ${questions}
+    ${resultHtml}`;
+}
+
+// ── Summary view ──
+function renderSummary() {
+  const rows = WORKFLOWS.map(w => {
+    const done = isComplete(w.id);
+    const sc = totalScore(w.id);
+    const a = getA(w.id);
+
+    if (!done) {
+      const count = answeredCount(w.id);
+      return `
+        <div class="summary-row incomplete">
+          <div>
+            <div class="summary-wf-name">${w.title}</div>
+            <div class="summary-wf-desc">${w.desc}</div>
+          </div>
+          <div class="summary-pending">${count}/8 done</div>
+          <div class="summary-pending">—</div>
+        </div>`;
+    }
+
+    const { category, override } = getCategory(sc, a);
+    const r = RESULTS[category];
+    return `
+      <div class="summary-row" onclick="selectWf(${WORKFLOWS.indexOf(w)})" style="cursor:pointer">
+        <div>
+          <div class="summary-wf-name">${w.title}</div>
+          <div class="summary-wf-desc">${w.desc}${override ? ' ⚠' : ''}</div>
+        </div>
+        <div class="summary-score theme-${category}-score">${sc}</div>
+        <div class="summary-label theme-${category}-label">${r.tag}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('main').innerHTML = `
+    <div class="page-title">Summary</div>
+    <div class="page-desc">All workflows scored. Click any row to review details.</div>
+    <div class="summary-grid">${rows}</div>`;
+}
+
+// ── Methodology view ──
+function renderMethodology() {
+  document.getElementById('main').innerHTML = `
+    <div class="page-title">Scoring Methodology</div>
+    <div class="page-desc">Where the criteria, scoring, and thresholds come from — and why.</div>
+
+    <div class="method-section">
+      <h2>Why this scorecard exists</h2>
+      <p>Most AI readiness frameworks are either too abstract (enterprise-level) or too vague (blog-post checklists). This scorecard is built for small-to-mid agency and consulting work, where the question isn't "should we adopt AI?" but "does AI actually help <em>this specific workflow</em>?"</p>
+      <p>The 8 criteria are grounded in published research on what actually predicts automation success or failure. The scoring is a structured heuristic — not a scientific algorithm. Its job is to force honest thinking and create a defensible record of your reasoning, not to produce an objective verdict.</p>
+    </div>
+
+    <div class="method-section">
+      <h2>Academic & Industry Sources</h2>
+
+      <div class="source-card">
+        <div class="source-title">Brynjolfsson, E. &amp; Mitchell, T. — "What Can Machines Learn, and What Does It Mean for Occupations and the Economy?"</div>
+        <div class="source-meta">Science, Vol. 358, 2017 · MIT &amp; Stanford</div>
+        <div class="source-body">Identified task-level characteristics that predict suitability for machine learning automation: structured inputs, well-defined outputs, access to training data, and repetition. Directly informs Criteria 1 (Repetition), 2 (Input Structure), 3 (Output Verifiability), and 7 (Data Availability).</div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-title">McKinsey Global Institute — "A Future That Works: Automation, Employment, and Productivity"</div>
+        <div class="source-meta">McKinsey &amp; Company, 2017</div>
+        <div class="source-body">Analyzed automation potential across 800+ occupations. Key finding: the strongest predictors of automation suitability are physical or cognitive routine-ness, data availability, and whether outputs are predictable. Informs Criteria 5 (Bottleneck Type) and 8 (Output Standardization).</div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-title">Autor, D. — "Why Are There Still So Many Jobs? The History and Future of Workplace Automation"</div>
+        <div class="source-meta">Journal of Economic Perspectives, 2015 · MIT</div>
+        <div class="source-body">Distinguished between routine tasks (automatable) and non-routine judgment tasks (resistant to automation). Established that the bottleneck type — volume vs. judgment — is the critical variable. Directly informs Criterion 5 (Bottleneck Type).</div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-title">Gartner AI Readiness Framework</div>
+        <div class="source-meta">Gartner Research, multiple editions</div>
+        <div class="source-body">Enterprise AI adoption framework that weights human oversight, error consequence management, and governance as prerequisites for deployment. Informs Criteria 4 (Error Catchability) and 6 (Stakes of Error), and the Risk Override rule.</div>
+      </div>
+    </div>
+
+    <div class="method-section">
+      <h2>The 8 Criteria — What Each Measures</h2>
+      <table class="criteria-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Criterion</th>
+            <th>What it's actually testing</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Repetition Frequency</td>
+            <td>AI cost justification requires volume. Rare tasks don't generate enough return to offset implementation overhead.</td>
+            <td>Brynjolfsson &amp; Mitchell, McKinsey</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Input Structure</td>
+            <td>ML systems degrade with inconsistent inputs. Freeform, variable input means unpredictable output quality.</td>
+            <td>Brynjolfsson &amp; Mitchell</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Output Verifiability</td>
+            <td>If errors are invisible, they compound silently. AI is only safe where outputs can be checked against a standard.</td>
+            <td>Brynjolfsson &amp; Mitchell</td>
+          </tr>
+          <tr>
+            <td>4 <span class="risk-inline">⚠ Risk</span></td>
+            <td>Error Catchability</td>
+            <td>Human-in-the-loop is the primary safety mechanism for AI. Removing review before client delivery removes the last line of defense.</td>
+            <td>Gartner</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Bottleneck Type</td>
+            <td>AI solves throughput constraints, not judgment constraints. Misidentifying the bottleneck leads to expensive tools that don't help.</td>
+            <td>Autor (2015)</td>
+          </tr>
+          <tr>
+            <td>6 <span class="risk-inline">⚠ Risk</span></td>
+            <td>Stakes of Error</td>
+            <td>High-consequence errors — legal, financial, reputational — require human ownership of outputs. Efficiency gains do not justify those risks.</td>
+            <td>Gartner</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Data Availability</td>
+            <td>AI operates on patterns in existing data. Without prior examples, documentation, or structured inputs, there is no material for the system to work with.</td>
+            <td>Brynjolfsson &amp; Mitchell, McKinsey</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Output Standardization</td>
+            <td>Templated outputs are measurable, improvable, and automatable. Highly personal outputs require human judgment that AI cannot replicate reliably.</td>
+            <td>McKinsey, Autor</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="method-section">
+      <h2>Why 1, 3, 5 — Not 1 Through 5</h2>
+      <p>Continuous 1–5 scales invite hedging. People default to 2s and 4s to avoid commitment. Forcing a choice between 1, 3, and 5 means every answer is a real decision: low, middle, or high. No comfort zone.</p>
+      <p>This also makes scoring transparent — you can always explain why you chose 1 or 5. "I gave it a 2" is harder to defend in a client conversation.</p>
+    </div>
+
+    <div class="method-section">
+      <h2>Why Those Score Thresholds</h2>
+      <p>With 8 criteria scored 1/3/5, the range is 8–40. The midpoint is 24. The logic:</p>
+      <div class="threshold-row">
+        <div class="threshold-score" style="color:#e53e3e">8–16</div>
+        <div class="threshold-label theme-no-fit-label">No AI Fit</div>
+        <div class="threshold-desc">Most criteria score low. The workflow lacks the fundamental characteristics AI requires. Fix the process or leave it alone.</div>
+      </div>
+      <div class="threshold-row">
+        <div class="threshold-score" style="color:#dd6b20">17–24</div>
+        <div class="threshold-label theme-automation-label">Automation</div>
+        <div class="threshold-desc">Below the midpoint. Some structure and repetition exist, but not enough for AI. Simpler, cheaper tools (Zapier, scripts) will do more for less.</div>
+      </div>
+      <div class="threshold-row">
+        <div class="threshold-score" style="color:#2563eb">25–32</div>
+        <div class="threshold-label theme-ai-assisted-label">AI-Assisted</div>
+        <div class="threshold-desc">Above midpoint. Enough structure and volume for AI to reduce effort. Human stays in the loop. Copilot model — not autonomous.</div>
+      </div>
+      <div class="threshold-row">
+        <div class="threshold-score" style="color:#16a34a">33–40</div>
+        <div class="threshold-label theme-ai-system-label">AI System</div>
+        <div class="threshold-desc">Most criteria score high. Volume, structure, verifiability, and manageable stakes all align. Worth building a proper AI workflow or tool.</div>
+      </div>
+      <p style="margin-top:16px;font-size:12.5px;color:#888;">Note: The exact threshold numbers are logically derived from the scoring range, not empirically validated. They are calibrated heuristics. After scoring 10–15 real workflows, you can adjust them based on what you observe.</p>
+    </div>
+
+    <div class="method-section">
+      <h2>The Risk Override Rule</h2>
+      <p>If Criterion 4 (Error Catchability) and Criterion 6 (Stakes of Error) both score 1, the recommendation is automatically downgraded by one category — regardless of total score.</p>
+      <p>This catches the most dangerous edge case: a workflow that scores reasonably well overall but where errors reach clients unreviewed and consequences are serious. No efficiency argument justifies that combination. The downgrade is non-negotiable.</p>
+    </div>
+
+    <div class="method-section">
+      <h2>What This Scorecard Is Not</h2>
+      <p>This is not a machine that produces objective verdicts. It is a structured thinking tool that forces honest evaluation and generates a defensible audit trail. The score opens the conversation — it does not end it.</p>
+      <p>When presenting results to a client, frame it as: <em>"This is how we evaluated your workflow against the criteria that predict AI success or failure. Here's what the scoring revealed — and here's what that means for our recommendation."</em></p>
+    </div>`;
+}
+
+// ── Routing ──
+function selectWf(idx) {
+  current = idx;
+  render();
+  window.scrollTo(0, 0);
+}
+function showSummary() {
+  current = 'summary';
+  render();
+  window.scrollTo(0, 0);
+}
+function showMethodology() {
+  current = 'methodology';
+  render();
+  window.scrollTo(0, 0);
+}
+
+function render() {
+  renderNav();
+  if (current === 'summary') renderSummary();
+  else if (current === 'methodology') renderMethodology();
+  else renderWorkflow(current);
+}
+
+render();
+</script>
+</body>
+</html>
