@@ -1160,27 +1160,21 @@ function renderMethodology() {
       <h2>Academic & Industry Sources</h2>
 
       <div class="source-card">
-        <div class="source-title"><a href="https://www.aeaweb.org/articles?id=10.1257/pandp.20181019" target="_blank" rel="noopener">Brynjolfsson, E. &amp; Mitchell, T. — "What Can Machines Learn, and What Does It Mean for Occupations and the Economy?"</a></div>
-        <div class="source-meta">AEA Papers &amp; Proceedings, Vol. 108, 2018 · MIT &amp; Stanford</div>
-        <div class="source-body">Identified task-level characteristics that predict suitability for machine learning automation: structured inputs, well-defined outputs, access to training data, and repetition. Directly informs Criteria 1 (Repetition), 2 (Input Structure), 3 (Output Verifiability), and 7 (Data Availability).</div>
+        <div class="source-title"><a href="https://www.gartner.com/en/information-technology/topics/ai-readiness" target="_blank" rel="noopener">Gartner AI Readiness Framework</a></div>
+        <div class="source-meta">Gartner Research, multiple editions</div>
+        <div class="source-body">Enterprise AI adoption framework that weights human oversight, error consequence management, and governance as prerequisites for deployment. Informs Criteria 4 (Error Catchability) and 6 (Stakes of Error), and the Risk Override rule.</div>
       </div>
 
       <div class="source-card">
         <div class="source-title"><a href="https://www.mckinsey.com/featured-insights/digital-disruption/harnessing-automation-for-a-future-that-works" target="_blank" rel="noopener">McKinsey Global Institute — "A Future That Works: Automation, Employment, and Productivity"</a></div>
         <div class="source-meta">McKinsey &amp; Company, 2017</div>
-        <div class="source-body">Analyzed automation potential across 800+ occupations. Key finding: the strongest predictors of automation suitability are physical or cognitive routine-ness, data availability, and whether outputs are predictable. Informs Criteria 5 (Bottleneck Type) and 8 (Output Standardization).</div>
+        <div class="source-body">Analyzed automation potential across 800+ occupations. Key finding: the strongest predictors of automation suitability are physical or cognitive routine-ness, data availability, and whether outputs are predictable. Informs Criteria 1 (Repetition), 2 (Input Structure), 3 (Output Verifiability), 5 (Bottleneck Type), 7 (Data Availability), and 8 (Output Standardization).</div>
       </div>
 
       <div class="source-card">
         <div class="source-title">Chandrasekaran, A. — "Why 50% of GenAI Projects Fail — And How to Beat the Odds"</div>
         <div class="source-meta">Gartner, January 2026</div>
         <div class="source-body">Gartner analysis of hundreds of GenAI implementations found that at least 50% of projects are abandoned after proof of concept — due to poor data quality, inadequate risk controls, escalating costs, and unclear business value. The five failure points identified map directly to the criteria scored in this audit: lack of business value (Criterion 5), data readiness (Criterion 7), responsible AI gaps (Criteria 4 &amp; 6), and the Risk Override rule.</div>
-      </div>
-
-      <div class="source-card">
-        <div class="source-title"><a href="https://www.gartner.com/en/information-technology/topics/ai-readiness" target="_blank" rel="noopener">Gartner AI Readiness Framework</a></div>
-        <div class="source-meta">Gartner Research, multiple editions</div>
-        <div class="source-body">Enterprise AI adoption framework that weights human oversight, error consequence management, and governance as prerequisites for deployment. Informs Criteria 4 (Error Catchability) and 6 (Stakes of Error), and the Risk Override rule.</div>
       </div>
     </div>
 
@@ -1200,19 +1194,19 @@ function renderMethodology() {
             <td>1</td>
             <td>Repetition Frequency</td>
             <td>AI cost justification requires volume. Rare tasks don't generate enough return to offset implementation overhead.</td>
-            <td>Brynjolfsson &amp; Mitchell, McKinsey</td>
+            <td>McKinsey</td>
           </tr>
           <tr>
             <td>2</td>
             <td>Input Structure</td>
             <td>ML systems degrade with inconsistent inputs. Freeform, variable input means unpredictable output quality.</td>
-            <td>Brynjolfsson &amp; Mitchell</td>
+            <td>McKinsey</td>
           </tr>
           <tr>
             <td>3</td>
             <td>Output Verifiability</td>
             <td>If errors are invisible, they compound silently. AI is only safe where outputs can be checked against a standard.</td>
-            <td>Brynjolfsson &amp; Mitchell</td>
+            <td>McKinsey</td>
           </tr>
           <tr>
             <td>4 <span class="risk-inline">⚠ Risk</span></td>
@@ -1236,7 +1230,7 @@ function renderMethodology() {
             <td>7</td>
             <td>Data Availability</td>
             <td>AI operates on patterns in existing data. Without prior examples, documentation, or structured inputs, there is no material for the system to work with.</td>
-            <td>Brynjolfsson &amp; Mitchell, McKinsey</td>
+            <td>McKinsey</td>
           </tr>
           <tr>
             <td>8</td>
