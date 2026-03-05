@@ -1081,6 +1081,7 @@ function renderMethodology() {
 
     <div class="method-section">
       <h2>Why this scorecard exists</h2>
+      <p>Gartner research (January 2026) found that at least 50% of generative AI projects are abandoned after proof of concept — due to poor data quality, inadequate risk controls, escalating costs, or unclear business value. The pattern is consistent: organizations start with the tool, not the workflow. This scorecard starts with the workflow.</p>
       <p>Most AI readiness frameworks are either too abstract (enterprise-level) or too vague (blog-post checklists). This scorecard is built for small-to-mid agency and consulting work, where the question isn't "should we adopt AI?" but "does AI actually help <em>this specific workflow</em>?"</p>
       <p>The 8 criteria are grounded in published research on what actually predicts automation success or failure. The scoring is a structured heuristic — not a scientific algorithm. Its job is to force honest thinking and create a defensible record of your reasoning, not to produce an objective verdict.</p>
     </div>
@@ -1101,9 +1102,9 @@ function renderMethodology() {
       </div>
 
       <div class="source-card">
-        <div class="source-title"><a href="https://www.aeaweb.org/articles?id=10.1257/jep.29.3.3" target="_blank" rel="noopener">Autor, D. — "Why Are There Still So Many Jobs? The History and Future of Workplace Automation"</a></div>
-        <div class="source-meta">Journal of Economic Perspectives, 2015 · MIT</div>
-        <div class="source-body">Distinguished between routine tasks (automatable) and non-routine judgment tasks (resistant to automation). Established that the bottleneck type — volume vs. judgment — is the critical variable. Directly informs Criterion 5 (Bottleneck Type).</div>
+        <div class="source-title">Chandrasekaran, A. — "Why 50% of GenAI Projects Fail — And How to Beat the Odds"</div>
+        <div class="source-meta">Gartner, January 2026</div>
+        <div class="source-body">Gartner analysis of hundreds of GenAI implementations found that at least 50% of projects are abandoned after proof of concept — due to poor data quality, inadequate risk controls, escalating costs, and unclear business value. The five failure points identified map directly to the criteria scored in this audit: lack of business value (Criterion 5), data readiness (Criterion 7), responsible AI gaps (Criteria 4 &amp; 6), and the Risk Override rule.</div>
       </div>
 
       <div class="source-card">
@@ -1153,7 +1154,7 @@ function renderMethodology() {
             <td>5</td>
             <td>Bottleneck Type</td>
             <td>AI solves throughput constraints, not judgment constraints. Misidentifying the bottleneck leads to expensive tools that don't help.</td>
-            <td>Autor (2015)</td>
+            <td>McKinsey, Gartner 2026</td>
           </tr>
           <tr>
             <td>6 <span class="risk-inline">⚠ Risk</span></td>
@@ -1171,7 +1172,7 @@ function renderMethodology() {
             <td>8</td>
             <td>Output Standardization</td>
             <td>Templated outputs are measurable, improvable, and automatable. Highly personal outputs require human judgment that AI cannot replicate reliably.</td>
-            <td>McKinsey, Autor</td>
+            <td>McKinsey</td>
           </tr>
         </tbody>
       </table>
