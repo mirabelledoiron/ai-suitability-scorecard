@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Suitability Scorecard</title>
+  <title>AI Suitability Scorecard — Mueller Communications</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -504,91 +504,233 @@
 
 <script>
 const WORKFLOWS = [
-  { id: 1, title: "Client Proposal / Brief",    desc: "Writing a proposal or brief for a new or existing client" },
-  { id: 2, title: "Client Onboarding",          desc: "Gathering info, setting up tools, running the first meeting" },
-  { id: 3, title: "Design Brief Review",        desc: "Reviewing and responding to a design brief" },
-  { id: 4, title: "Progress Reporting",         desc: "Reporting on project progress to a client" },
-  { id: 5, title: "Social Media Content",       desc: "Creating social media content for a client" },
-  { id: 6, title: "Website & Branding",         desc: "Website and branding services" },
+  // PR Services
+  { id: 1,  group: "PR Services",        title: "Media Relations",                       desc: "Pitching stories, managing journalist relationships, securing coverage" },
+  { id: 2,  group: "PR Services",        title: "Crisis Communications",                 desc: "Rapid response, reputation protection, stakeholder messaging under pressure" },
+  { id: 3,  group: "PR Services",        title: "Public Affairs & Community",            desc: "Advocacy, government relations, grassroots campaigns, referendums" },
+  { id: 4,  group: "PR Services",        title: "Messaging & Content Development",       desc: "Brand narratives, StoryBrand sessions, content platforms, key messages" },
+  { id: 5,  group: "PR Services",        title: "Social Media (PR)",                     desc: "Organic social, community management, digital presence for PR clients" },
+  { id: 6,  group: "PR Services",        title: "Employee Engagement & Change",          desc: "Internal communications during transitions, org change, staff alignment" },
+  { id: 7,  group: "PR Services",        title: "Events",                                desc: "Press conferences, community gatherings, launches, strategic event execution" },
+  { id: 8,  group: "PR Services",        title: "Design & Collateral Creation",          desc: "Branded materials, reports, digital assets, visual communications" },
+  { id: 9,  group: "PR Services",        title: "Spokesperson Training",                 desc: "Media coaching, message preparation, executive interview readiness" },
+  { id: 10, group: "PR Services",        title: "Thought Leadership",                    desc: "Expert positioning through content, speaking, and strategic media placement" },
+  // Marketing Services
+  { id: 11, group: "Marketing Services", title: "Content Marketing",                     desc: "Blogs, articles, newsletters — content that attracts and retains audience" },
+  { id: 12, group: "Marketing Services", title: "Campaign Planning & Activation",        desc: "Multi-channel campaign strategy, design, and rollout" },
+  { id: 13, group: "Marketing Services", title: "Branding",                              desc: "Brand identity development and refinement — visual and verbal" },
+  { id: 14, group: "Marketing Services", title: "SEM / PPC Management",                 desc: "Paid search, bid management, and ad optimization across platforms" },
+  { id: 15, group: "Marketing Services", title: "Email & Marketing Automation",          desc: "Automated workflows, nurture sequences, and email campaign management" },
+  { id: 16, group: "Marketing Services", title: "SEO & AIO",                             desc: "Organic search optimization and AI-driven search presence" },
 ];
 
 const WORKFLOW_CONTEXT = {
   1: {
-    intro: "Proposals are high-judgment work — the value is in strategy and positioning, not volume processing. AI can assist with drafting and structuring, but should not own the outcome. Score this honestly: most proposal work scores lower than people expect.",
+    intro: "Media relations is relationship-driven work at its core. The value is in knowing which journalist cares about which story, and when. AI can help with monitoring, drafting first pitches, and tracking coverage — but the strategic judgment of who to approach and how stays human.",
     hints: {
-      1: "Most consultants and small agencies write 1–4 proposals per week. Below that, volume doesn't justify AI overhead.",
-      2: "Proposals often start from a call, email, or conversation. Fully freeform input is common — a weak signal for AI.",
-      3: "A proposal's quality is partly subjective. A client may reject a technically correct one. Clear right/wrong rarely applies.",
-      4: "You almost always review a proposal before sending — this criterion typically scores well here.",
-      5: "The hard part is figuring out what to say and how to position. That's judgment, not a throughput problem.",
-      6: "A poor proposal can lose a deal or misrepresent your scope. Reputational and financial stakes are real.",
-      7: "If you have past proposals, pricing frameworks, and case studies, you have rich material to work from.",
-      8: "Most proposals share a similar structure but are meaningfully customized per client — partial standardization.",
+      1: "Active media outreach — pitching, following up, monitoring — happens multiple times a week across a client portfolio.",
+      2: "Each pitch is tailored to a specific journalist and story angle. While templates exist, the input varies significantly by target.",
+      3: "Coverage secured or not is measurable. Quality and tone of coverage is harder to assess objectively.",
+      4: "Pitches are reviewed before they go out. A wrong pitch to the wrong journalist is a relationship cost, not just a mistake.",
+      5: "The bottleneck is often knowing which angle works for which journalist — that's judgment, not volume.",
+      6: "A mishandled pitch or off-message placement can damage both the client relationship and a journalist relationship permanently.",
+      7: "Media contact databases, past coverage archives, client messaging docs, and press release templates typically exist.",
+      8: "Pitches follow a general structure (hook, context, offer) but are meaningfully customized per journalist and story.",
     }
   },
   2: {
-    intro: "Onboarding splits into two distinct parts: administrative setup (tool access, contracts, intake forms — highly automatable) and relationship-building (tone, trust, expectations — not). Your score depends heavily on which part you're evaluating.",
+    intro: "Crisis communications is the highest-stakes PR service. Speed, precision, and human judgment are all critical at the same time. AI should play a supporting role only — background research, media monitoring, draft starting points — never own the messaging or the response.",
     hints: {
-      1: "Onboarding frequency depends on growth rate. A fast-growing agency might onboard 2–4 clients per week.",
-      2: "If you have a discovery intake form or onboarding checklist, input is structured. Many teams don't yet.",
-      3: "Checklist-style tasks (contracts signed, tools set up) are verifiable. Relationship quality is not.",
-      4: "You're typically present throughout onboarding — error catchability is high.",
-      5: "Admin bottlenecks (sending docs, setting up Slack, sharing credentials) are volume. Relationship bottlenecks are judgment.",
-      6: "A bad onboarding experience damages the client relationship from day one. Moderate-to-high stakes.",
-      7: "After a few clients, you usually have a standard onboarding doc set and process. Data availability improves over time.",
-      8: "The admin parts are fairly standard. The introductory framing and communication style are not.",
+      1: "Crises are episodic and unpredictable. They don't happen on a schedule — frequency is low but intensity is extreme.",
+      2: "Every crisis is unique. The context, stakeholders, and required tone vary completely from one situation to the next.",
+      3: "Whether a crisis response worked is hard to judge in the moment. Outcomes become clear over days or weeks.",
+      4: "Crisis communications always has multiple layers of senior review before anything goes public. This scores well.",
+      5: "The bottleneck is judgment — what to say, to whom, in what order, and how quickly. Speed matters but accuracy matters more.",
+      6: "This is the highest-stakes category. Legal liability, long-term reputation, and leadership credibility are all on the line.",
+      7: "Crisis playbooks and communication frameworks may exist, but each crisis requires fresh judgment about how to apply them.",
+      8: "There is no standard template for a crisis response. The message, tone, and channels are unique to each situation.",
     }
   },
   3: {
-    intro: "Brief review is an expertise-driven judgment call. AI can help flag missing information or surface inconsistencies, but reading between the lines — understanding what a client actually wants versus what they wrote — requires contextual experience.",
+    intro: "Public affairs and advocacy is built on relationships with elected officials, government staff, and community organizations — relationships that take years to build and are not replicable by AI. Strategic and relational work stays fully human. Research and briefing support is where AI can help.",
     hints: {
-      1: "Brief reviews happen as often as new briefs arrive. In an active agency this can be several per week.",
-      2: "Briefs vary widely in format, depth, and completeness — often freeform or semi-structured at best.",
-      3: "Whether a brief is 'good enough' or 'achievable' requires professional judgment. Hard to verify objectively.",
-      4: "You always review and respond yourself — error catchability is high.",
-      5: "The bottleneck is understanding what the client really wants, not processing speed.",
-      6: "Misreading a brief leads to wrong deliverables, scope creep, or rework. Moderate stakes.",
-      7: "Past briefs and client history help calibrate, but each brief is contextually different.",
-      8: "Responses to briefs are tailored to the client, the project type, and the relationship — low standardization.",
+      1: "Campaign and advocacy work is intensive during active periods (referendums, legislative sessions) and quieter between them.",
+      2: "Government relations inputs are highly contextual — political climate, stakeholder positions, timing all change constantly.",
+      3: "Political and advocacy outcomes are rarely directly attributable to specific actions. Hard to verify cleanly.",
+      4: "All communications — especially with government or public stakeholders — are reviewed carefully before release.",
+      5: "The bottleneck is almost always judgment: reading the political landscape, knowing which relationships to activate, and when.",
+      6: "Public affairs missteps can damage government relationships that took years to build. Stakes are high and long-lasting.",
+      7: "Briefing documents, stakeholder maps, and campaign materials from prior engagements are typically available.",
+      8: "Advocacy materials have some structural conventions but are highly tailored to specific audiences and political contexts.",
     }
   },
   4: {
-    intro: "Progress reporting is one of the strongest AI candidates in agency and consulting work. It's structured data (milestones, status, hours, blockers) translated into a consistent narrative format — exactly the kind of task where AI reduces time without reducing quality.",
+    intro: "Foundational messaging work — StoryBrand sessions, brand narratives, key message platforms — is strategy at its core. It requires deep listening and synthesis skills that AI cannot replicate. Content production downstream from a completed message platform is a stronger AI candidate.",
     hints: {
-      1: "Reports typically go out weekly or bi-weekly per client. Multiply that across 5–10 clients and volume adds up quickly.",
-      2: "If you have a reporting template or PM tool export, input is well-structured. This is a common strength.",
-      3: "Status reports have clear accuracy criteria — milestones either happened or they didn't. Easy to verify.",
-      4: "Reports are reviewed before sending. You catch errors before they reach the client.",
-      5: "The bottleneck is usually writing time — reformatting the same update structure repeatedly. A volume problem AI can help with.",
-      6: "An inaccurate report damages trust but is usually recoverable with a correction. Moderate stakes.",
-      7: "Project data, timelines, and notes live in your PM tools. This is typically rich, structured data.",
-      8: "Reports usually follow a consistent structure: what happened, what's next, any blockers. High standardization.",
+      1: "Strategic messaging engagements happen a few times per year per client. Content production flowing from that strategy is more frequent.",
+      2: "Discovery sessions and stakeholder interviews are freeform. Once a message platform exists, content production has more structure.",
+      3: "Whether messaging 'works' is tested through audience response over time — not immediately verifiable.",
+      4: "All messaging outputs are reviewed extensively by client leadership before any external use.",
+      5: "The bottleneck in messaging strategy is deep listening and synthesis. In content production, it shifts toward volume.",
+      6: "Incorrect or off-brand messaging is foundational — it shapes everything downstream and is costly to undo.",
+      7: "Existing brand materials, past messaging docs, competitor positioning, and interview transcripts provide rich source material.",
+      8: "Message platforms follow a consistent structure; content produced from them is more standardized than the strategy itself.",
     }
   },
   5: {
-    intro: "Social content is high-volume and relatively structured — one of the most validated real AI use cases. The key variable is how much brand voice and creative differentiation matter. Generic content scores high; highly distinctive brand content scores lower.",
+    intro: "Social media management is the strongest AI candidate in PR work. High volume, structured post formats, and measurable performance metrics all align well. The key variable is how distinctive the client's voice needs to be — more distinctive means more human oversight required.",
     hints: {
-      1: "Multiple posts per platform per week per client. Across a client roster, volume is almost always high.",
-      2: "Content briefs, brand guidelines, and content calendars provide structure. Most agencies have some form of this.",
-      3: "Performance metrics (engagement, reach, saves) provide verifiability over time. Individual post quality is subjective.",
-      4: "Content is typically approved by you and/or the client before publishing — review is standard.",
-      5: "The bottleneck is usually raw content production — generating enough variation and volume. That's a volume problem.",
-      6: "A poor post can be deleted and corrected. Reputational risk exists but is generally contained and recoverable.",
-      7: "Brand voice documents, past content, campaign briefs, and competitor examples are usually available.",
-      8: "Caption + image + hashtags per platform is a fairly standardized format. Templates are common.",
+      1: "Multiple posts per platform per week across a client portfolio. Volume is consistently high in this service line.",
+      2: "Content calendars, brand voice guides, and platform-specific templates provide solid structure to work from.",
+      3: "Engagement metrics, reach, and follower growth provide clear performance benchmarks over time.",
+      4: "Content typically goes through a client approval process before publishing — review is standard practice.",
+      5: "The core bottleneck is production volume — generating enough content variation across platforms and clients.",
+      6: "A problematic post can usually be removed and corrected. Reputational risk is real but generally contained.",
+      7: "Brand voice documents, past content libraries, campaign briefs, and competitor audits are typically well-developed.",
+      8: "Platform post formats (caption, image, hashtags, CTA) are highly standardized. Templates are common and reusable.",
     }
   },
   6: {
-    intro: "Brand and website work is deeply judgment-driven, highly subjective, and long-lasting in its consequences. AI can assist in research, copywriting drafts, and component generation — but creative direction and strategic decisions must remain human. Expect a low score here. That's correct.",
+    intro: "Internal communications during organizational change requires exceptional care with tone, timing, and trust. Getting this wrong damages employee confidence and accelerates the problems you're trying to manage. AI can assist with drafting, but message ownership must sit with leadership.",
     hints: {
-      1: "Brand and website projects are large, complex engagements. Repetition is low — often once per client relationship.",
-      2: "Each project starts differently. Discovery conversations vary significantly in scope and depth.",
-      3: "Brand quality is highly subjective. There is no clear right/wrong — only resonance with the target audience.",
-      4: "Everything is reviewed extensively before client presentation. Catchability is high.",
-      5: "The bottleneck is creative judgment and strategic clarity — not processing speed.",
-      6: "Brand decisions are long-lived, high-visibility, and hard to reverse. Stakes are significant.",
-      7: "Research, competitor analysis, and brand documentation can be gathered — some structured data exists.",
-      8: "Every brand is intended to be unique by definition. Output standardization is low by design.",
+      1: "Change communications are campaign-based — intensive during transitions, quieter between them. Frequency varies by engagement.",
+      2: "Each change situation — merger, restructure, leadership shift — requires a unique communications approach.",
+      3: "Employee sentiment is measurable through surveys over time, but immediate message effectiveness is hard to gauge.",
+      4: "All internal communications are reviewed by HR and senior leadership before distribution. Always.",
+      5: "The bottleneck is reading the organizational culture and calibrating tone — judgment about how people are feeling right now.",
+      6: "Poorly managed change communications accelerates talent loss and erodes trust. Consequences are real and lasting.",
+      7: "Prior internal communications, org charts, HR documentation, and change management plans provide useful context.",
+      8: "Announcement formats have structure (what's changing, why, what it means for you), but tone is critical and highly contextual.",
+    }
+  },
+  7: {
+    intro: "Event work splits clearly into two parts: operational logistics (checklists, timelines, vendor coordination — highly systematic) and strategic framing (narrative, spokespeople, media engagement — judgment-driven). AI can assist the operational side. The strategic components stay human.",
+    hints: {
+      1: "Event frequency varies by client portfolio. A busy agency might run several events per month across all clients.",
+      2: "Event briefs, run-of-show documents, and vendor checklists provide solid structure for the operational side.",
+      3: "Event success has measurable criteria: attendance, media coverage secured, social reach, client satisfaction.",
+      4: "All event communications and materials are reviewed before the event. Live execution requires real-time judgment.",
+      5: "Logistics is a volume and coordination problem. Narrative framing and spokesperson prep are judgment problems.",
+      6: "Live events carry real-time reputational risk. A press conference that goes wrong is public and immediate.",
+      7: "Past event plans, run-of-show templates, vendor contacts, and media invite lists accumulate over time.",
+      8: "Event logistics follow highly standardized formats. Media strategy and messaging are more customized per event.",
+    }
+  },
+  8: {
+    intro: "Design and collateral splits by type. Branded social graphics and templated materials score high on AI suitability. Annual reports, campaign creative, and original visual concepts require design judgment and brand sensitivity that stays human.",
+    hints: {
+      1: "Social graphics and templated materials can be high volume. Annual reports and campaign assets are lower frequency.",
+      2: "Brand guidelines, templates, and asset libraries provide strong structure for production work. Campaign concepting does not.",
+      3: "Whether a design meets brand guidelines is verifiable. Whether it's compelling is subjective.",
+      4: "All design work is reviewed before client delivery — multiple rounds of feedback are standard.",
+      5: "Templated production (resizing, adapting existing assets) is a volume bottleneck. Original creative is a judgment bottleneck.",
+      6: "Off-brand or low-quality design reflects directly on the client's professional credibility. Moderate-to-high stakes.",
+      7: "Brand asset libraries, style guides, past materials, and approved templates typically exist for established clients.",
+      8: "Templated collateral is highly standardized. Campaign creative and original design is not.",
+    }
+  },
+  9: {
+    intro: "Spokesperson training is a high-touch, people-intensive service. Coaching an executive to be confident and on-message in front of a camera or journalist requires direct human observation, real-time feedback, and relationship trust. AI has very limited application here.",
+    hints: {
+      1: "Training sessions are scheduled per client need — before a major announcement, media tour, or crisis. Low frequency.",
+      2: "Each executive and each situation is different. There is no standard input — you read the person in front of you.",
+      3: "Whether someone is 'media ready' requires direct human assessment. No checklist fully captures presence and confidence.",
+      4: "Training is inherently human-reviewed — you're in the room watching and responding in real time.",
+      5: "The bottleneck is coaching judgment — reading body language, adjusting in real time, knowing what each person needs.",
+      6: "An unprepared spokesperson in a live media situation can cause significant and immediate reputational damage.",
+      7: "Message platforms, talking points, and past interview recordings provide useful preparation material.",
+      8: "Training sessions follow a general structure (prep, practice, debrief), but the content is entirely personalized.",
+    }
+  },
+  10: {
+    intro: "Thought leadership positioning requires strategic judgment about which topics, formats, and platforms will actually move the needle for a specific expert. AI can assist with content drafting and research at scale, but the positioning strategy and voice must be human.",
+    hints: {
+      1: "Active thought leadership programs produce content regularly — articles, commentary, social posts — making this relatively high volume.",
+      2: "Content briefs and editorial calendars provide structure. The expert's voice and perspective must come through consistently.",
+      3: "Reach, engagement, speaking invitations, and media requests are measurable indicators of thought leadership effectiveness.",
+      4: "All content published under an executive's name is reviewed by them and communications staff before release.",
+      5: "The bottleneck is often content production volume — maintaining a consistent publishing cadence while managing client workload.",
+      6: "Off-brand or poorly argued content published under a senior leader's name directly affects their professional reputation.",
+      7: "Existing speeches, articles, interview transcripts, and expertise areas provide rich source material for content development.",
+      8: "Thought leadership content follows structural conventions (POV, evidence, call to action) but voice is highly personal.",
+    }
+  },
+  11: {
+    intro: "Content marketing — blogs, articles, newsletters — is high volume and relatively structured. It's one of the stronger AI candidates in the marketing suite, particularly for research-heavy or SEO-driven content. The critical variable is how distinctively the client's voice needs to come through.",
+    hints: {
+      1: "Regular publishing cadences — weekly blog posts, monthly newsletters — mean content volume is consistently high.",
+      2: "Content briefs, editorial calendars, and SEO keyword frameworks provide solid structure to work from.",
+      3: "Readership, search rankings, time-on-page, and lead generation provide clear performance benchmarks.",
+      4: "Content is reviewed and approved before publication — editorial oversight is standard.",
+      5: "The core bottleneck is production volume — researching and writing enough quality content consistently.",
+      6: "Factual errors or off-brand content can damage credibility but are usually correctable with a retraction or update.",
+      7: "Brand guidelines, past content libraries, SEO keyword research, and topic clusters are typically well-developed.",
+      8: "Article structure (intro, body, CTA) and SEO formatting conventions are highly standardized across clients.",
+    }
+  },
+  12: {
+    intro: "Campaign planning combines strategic judgment (what will resonate with this audience?) with operational execution (channel mix, budget, timeline). AI can assist with research, benchmarking, and performance analysis, but the core campaign strategy is human-led.",
+    hints: {
+      1: "Campaign planning cycles depend on client activity — quarterly or bi-annual for most clients. Moderate frequency.",
+      2: "Campaign briefs have a standard structure but vary significantly by client objective, budget, and market.",
+      3: "Campaign metrics (reach, conversion, ROI) are measurable after launch. Pre-launch strategy quality is harder to assess.",
+      4: "All campaign strategies are reviewed by senior staff and the client before activation.",
+      5: "Strategy is a judgment bottleneck. Execution and optimization become volume bottlenecks once the campaign is live.",
+      6: "A misdirected campaign wastes significant budget and can miss critical market windows. Moderate-to-high stakes.",
+      7: "Market research, past campaign performance data, competitor audits, and audience data are typically available.",
+      8: "Campaign plans follow structural conventions but are highly customized per client, objective, and channel mix.",
+    }
+  },
+  13: {
+    intro: "Branding is the most judgment-intensive marketing service. Brand identity — who you are, what you stand for, how you're perceived — requires deep listening, cultural sensitivity, and creative synthesis that AI cannot replicate. Expect a low score here. That's the correct answer.",
+    hints: {
+      1: "Brand development is a major engagement — once per client relationship, occasionally refreshed. Very low frequency.",
+      2: "Discovery is exploratory and freeform — workshops, stakeholder interviews, competitive immersion.",
+      3: "Brand effectiveness is measured over years through market perception surveys and business outcomes — not immediately verifiable.",
+      4: "Brand work goes through extensive client review and iteration at every stage.",
+      5: "The bottleneck is creative and strategic synthesis — there is no throughput problem to solve.",
+      6: "Brand positioning decisions are foundational, highly visible, and costly to reverse. Stakes are significant.",
+      7: "Market research, competitor positioning, and stakeholder interviews provide useful context, but synthesis is entirely human.",
+      8: "Every brand is intentionally unique — output standardization is the opposite of the goal.",
+    }
+  },
+  14: {
+    intro: "SEM and PPC are among the strongest AI candidates in the marketing stack. Campaign optimization is data-driven, repetitive, and highly measurable — exactly where AI tools already operate effectively. The strategic framing stays human; bid management, ad testing, and performance reporting are prime for AI assistance.",
+    hints: {
+      1: "Active SEM campaigns require daily monitoring, bid adjustments, and A/B testing — very high frequency.",
+      2: "Campaign structures, keyword lists, ad copy frameworks, and bid strategies follow consistent, replicable formats.",
+      3: "Click-through rate, conversion rate, cost-per-acquisition, and ROAS are immediately and precisely measurable.",
+      4: "Significant campaign changes are reviewed by account managers before going live. Automated bidding has guardrails.",
+      5: "Optimization is a data and volume problem — testing and adjusting dozens of variables across multiple client accounts.",
+      6: "Budget overspend or poor targeting has direct financial consequences, but changes can be made quickly.",
+      7: "Historical campaign data, keyword databases, competitor ad intelligence, and platform benchmarks are abundant.",
+      8: "Ad formats, campaign structures, and performance reports are highly standardized across platforms and clients.",
+    }
+  },
+  15: {
+    intro: "Email and marketing automation is the highest-scoring service in this entire audit. High volume, structured templates, clear deliverability metrics, and automated workflows all align perfectly. The human role shifts from production to strategy and quality oversight.",
+    hints: {
+      1: "Automated sequences run continuously across client databases — welcome flows, nurtures, re-engagement. Volume is very high.",
+      2: "Email templates, audience segments, and automation logic provide strong, replicable structure.",
+      3: "Open rates, click rates, unsubscribe rates, and conversions are immediately and precisely measurable.",
+      4: "Automation workflows are built and reviewed by account managers before activation — human oversight is built in.",
+      5: "The bottleneck is managing production scale — writing, testing, and optimizing dozens of touchpoints across client bases.",
+      6: "A poorly configured automation sending the wrong message to a large list is visible and immediate — but manageable.",
+      7: "CRM data, audience segments, past campaign benchmarks, and automation platform analytics are rich and accessible.",
+      8: "Email templates, subject line conventions, and automation workflow structures are highly standardized.",
+    }
+  },
+  16: {
+    intro: "SEO is a strong AI candidate — and AI optimization (AIO) makes it even more so, since AI tools now directly participate in both research and content optimization. Technical SEO and keyword-driven content are repetitive, data-driven, and measurable. Search strategy and editorial judgment stay human.",
+    hints: {
+      1: "Active SEO programs require regular content production, keyword monitoring, and technical audits — ongoing and frequent.",
+      2: "SEO briefs, keyword frameworks, and content optimization checklists provide clear, repeatable structure.",
+      3: "Organic traffic, keyword rankings, and search visibility are directly and consistently measurable.",
+      4: "SEO content is reviewed before publishing and optimized iteratively based on performance data.",
+      5: "Technical SEO tasks and content optimization at scale are volume problems — large amounts of structured, repetitive work.",
+      6: "Violating search engine guidelines can result in ranking penalties — serious but rare and usually avoidable with good practice.",
+      7: "Keyword research data, search console analytics, competitor analysis, and content audits are structured and accessible.",
+      8: "SEO content follows clear optimization formulas: keyword placement, metadata, heading structure, internal linking.",
     }
   },
 };
@@ -732,7 +874,16 @@ function themeFor(cat) {
 // ── Nav ──
 function renderNav() {
   const nav = document.getElementById('wf-nav');
-  nav.innerHTML = WORKFLOWS.map((w, i) => {
+  let html = '';
+  let lastGroup = null;
+
+  WORKFLOWS.forEach((w, i) => {
+    if (w.group !== lastGroup) {
+      if (lastGroup !== null) html += '<div style="height:8px"></div>';
+      html += `<div class="sidebar-label" style="margin-top:${lastGroup === null ? '0' : '4px'};margin-bottom:8px">${w.group}</div>`;
+      lastGroup = w.group;
+    }
+
     const done = isComplete(w.id);
     const count = answeredCount(w.id);
     const isActive = current === i;
@@ -746,10 +897,12 @@ function renderNav() {
       badge = `<span class="wf-badge" style="background:#222;color:#666">${count}/8</span>`;
     }
 
-    return `<button class="wf-btn ${isActive ? 'active' : ''}" onclick="selectWf(${i})">
+    html += `<button class="wf-btn ${isActive ? 'active' : ''}" onclick="selectWf(${i})">
       <span>${w.title}</span>${badge}
     </button>`;
-  }).join('');
+  });
+
+  nav.innerHTML = html;
 
   const summaryBtn = document.getElementById('summary-btn');
   summaryBtn.classList.toggle('active', current === 'summary');
