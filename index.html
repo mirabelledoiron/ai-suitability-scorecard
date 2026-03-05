@@ -448,6 +448,48 @@
     }
     .summary-pending { font-size: 12px; color: #bbb; }
 
+    /* ── Examples section ── */
+    .example-section {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0,0,0,0.07);
+    }
+    .example-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    .tool-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .tool-chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: rgba(0,0,0,0.05);
+      color: #555;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .example-flow {
+      font-size: 12.5px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .example-note {
+      font-size: 12px;
+      color: #888;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
     /* ── Color themes ── */
     /* no-fit */
     .theme-no-fit .result { background: #fff5f5; }
@@ -846,21 +888,41 @@ const RESULTS = {
     tag: 'No AI Fit',
     title: 'Leave alone or redesign the process first',
     body: 'Most criteria score low here. The workflow lacks the volume, structure, or verifiability that AI requires. Before any tool conversation, examine whether the workflow itself needs redesigning — adding AI to a broken process makes the process faster and more broken.',
+    examples: {
+      tools: ['Notion', 'Asana', 'Miro', 'Loom'],
+      flow: 'Map the current workflow → identify where the real friction is → redesign the process → then revisit whether any tooling helps',
+      note: 'Example: Spokesperson training is slow because executives arrive underprepared — the fix is a better pre-session briefing package, not an AI tool.',
+    },
   },
   'automation': {
     tag: 'Automation Candidate',
     title: 'Traditional automation — not AI',
     body: 'This workflow has some structure and repeatability, but not enough judgment-free volume for AI to add value over simpler solutions. Consider Zapier, Make, scripts, or platform-native automation first. These are cheaper, more predictable, and easier to govern.',
+    examples: {
+      tools: ['Zapier', 'Make', 'HubSpot Workflows', 'Google Apps Script'],
+      flow: 'Define the trigger event → map the action steps → build and test → monitor for errors',
+      note: 'Example: New client intake form submitted → auto-create CRM contact → send welcome email → notify account manager in Slack.',
+    },
   },
   'ai-assisted': {
     tag: 'AI-Assisted',
     title: 'AI can support — but a human must own it',
     body: 'Strong candidate for AI assistance in drafting, summarizing, classifying, or researching. The human stays in the loop and makes all final decisions. AI reduces effort, not accountability. Start with a copilot approach before considering anything automated.',
+    examples: {
+      tools: ['Claude', 'ChatGPT', 'Perplexity', 'Notion AI', 'Otter.ai'],
+      flow: 'Human defines the task → AI generates a first draft → Human reviews, edits, and refines → Human approves and delivers',
+      note: 'Example: AM briefs Claude on the client, the journalist, and the story angle → AI drafts the pitch → AM rewrites for tone and relationship context → AM sends it.',
+    },
   },
   'ai-system': {
     tag: 'AI System Candidate',
     title: 'Worth building a proper AI workflow',
     body: 'High volume, structured inputs, verifiable outputs, and manageable error stakes make this a strong candidate for a custom AI system — not just a copilot. Investing in a proper solution here will compound returns. Define success metrics before building.',
+    examples: {
+      tools: ['Claude API', 'n8n', 'Make + AI', 'Relevance AI'],
+      flow: 'Structured input received → AI processes and generates output → automated quality check → human approval gate → delivery',
+      note: 'Example: SEO brief submitted → AI generates full article draft with keyword optimization → editor reviews for accuracy and voice → approved draft published to CMS.',
+    },
   },
 };
 
@@ -1015,11 +1077,19 @@ function renderWorkflow(idx) {
     const overrideNote = override
       ? `<div class="override-note">⚠ Risk override applied — Criteria 4 and 6 both scored 1 (errors reach clients unreviewed, high stakes). Recommendation downgraded one category.</div>`
       : '';
+    const exHtml = r.examples ? `
+      <div class="example-section">
+        <div class="example-label">What this looks like</div>
+        <div class="tool-chips">${r.examples.tools.map(t => `<span class="tool-chip">${t}</span>`).join('')}</div>
+        <div class="example-flow">${r.examples.flow}</div>
+        <div class="example-note">${r.examples.note}</div>
+      </div>` : '';
     resultHtml = `
       <div class="result ${theme}">
         <div class="result-tag">${r.tag}</div>
         <div class="result-title">${r.title}</div>
         <div class="result-body">${r.body}</div>
+        ${exHtml}
         <div class="result-chips">${chips}</div>
         ${overrideNote}
       </div>`;
