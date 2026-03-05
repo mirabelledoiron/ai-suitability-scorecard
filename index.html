@@ -504,28 +504,24 @@
 
 <script>
 const WORKFLOWS = [
-  // PR Services
+  // PR
   { id: 1,  group: "PR",        title: "Media Relations",                 desc: "Pitching stories, managing journalist relationships, securing coverage" },
   { id: 2,  group: "PR",        title: "Crisis Communications",           desc: "Rapid response, reputation protection, stakeholder messaging under pressure" },
   { id: 3,  group: "PR",        title: "Public Affairs & Community",      desc: "Advocacy, government relations, grassroots campaigns, referendums" },
   { id: 4,  group: "PR",        title: "Messaging & Content Development", desc: "Brand narratives, StoryBrand sessions, content platforms, key messages" },
   { id: 5,  group: "PR",        title: "Social Media",                    desc: "Organic social, community management, digital presence for PR clients" },
   { id: 6,  group: "PR",        title: "Employee Engagement & Change",    desc: "Internal communications during transitions, org change, staff alignment" },
-  { id: 7,  group: "PR",        title: "Events",                          desc: "Press conferences, community gatherings, launches, strategic event execution" },
-  { id: 8,  group: "PR",        title: "Spokesperson Training",           desc: "Media coaching, message preparation, executive interview readiness" },
-  { id: 9,  group: "PR",        title: "Thought Leadership",              desc: "Expert positioning through content, speaking, and strategic media placement" },
-  // Marketing Services
-  { id: 10, group: "Marketing", title: "Content Marketing",               desc: "Blogs, articles, newsletters — content that attracts and retains audience" },
-  { id: 11, group: "Marketing", title: "Campaign Planning & Activation",  desc: "Multi-channel campaign strategy, design, and rollout" },
-  { id: 12, group: "Marketing", title: "Branding",                        desc: "Brand identity development and refinement — visual and verbal" },
-  { id: 13, group: "Marketing", title: "SEM / PPC Management",            desc: "Paid search, bid management, and ad optimization across platforms" },
-  { id: 14, group: "Marketing", title: "Email & Marketing Automation",    desc: "Automated workflows, nurture sequences, and email campaign management" },
-  { id: 15, group: "Marketing", title: "SEO & AIO",                       desc: "Organic search optimization and AI-driven search presence" },
+  { id: 7,  group: "PR",        title: "Spokesperson Training",           desc: "Media coaching, message preparation, executive interview readiness" },
+  // Marketing
+  { id: 8,  group: "Marketing", title: "Content Marketing",               desc: "Blogs, articles, newsletters — content that attracts and retains audience" },
+  { id: 9,  group: "Marketing", title: "Campaign Planning & Activation",  desc: "Multi-channel campaign strategy, design, and rollout" },
+  { id: 10, group: "Marketing", title: "Branding",                        desc: "Brand identity development and refinement — visual and verbal" },
+  { id: 11, group: "Marketing", title: "Email & Marketing Automation",    desc: "Automated workflows, nurture sequences, and email campaign management" },
+  { id: 12, group: "Marketing", title: "SEO & AIO",                       desc: "Organic search optimization and AI-driven search presence" },
   // Creative
-  { id: 16, group: "Creative",  title: "Design & Collateral",             desc: "Branded materials, reports, digital assets, visual communications" },
-  { id: 17, group: "Creative",  title: "Website Design & Development",    desc: "Discovery, IA, design, build, QA, and launch — full site delivery" },
-  { id: 18, group: "Creative",  title: "Website Content & Copy",          desc: "Web copy, narrative structure, and page-level messaging" },
-  { id: 19, group: "Creative",  title: "Videography",                     desc: "Brand films, testimonials, event coverage, social video production" },
+  { id: 13, group: "Creative",  title: "Design & Collateral",             desc: "Branded materials, reports, digital assets, visual communications" },
+  { id: 14, group: "Creative",  title: "Website Design & Development",    desc: "Discovery, IA, design, build, QA, and launch — full site delivery" },
+  { id: 15, group: "Creative",  title: "Website Content & Copy",          desc: "Web copy, narrative structure, and page-level messaging" },
 ];
 
 const WORKFLOW_CONTEXT = {
@@ -620,8 +616,8 @@ const WORKFLOW_CONTEXT = {
       8: "Event logistics follow highly standardized formats. Media strategy and messaging are more customized per event.",
     }
   },
-  // id 8 = Spokesperson Training
-  8: {
+  // id 7 = Spokesperson Training
+  7: {
     intro: "Spokesperson training is a high-touch, people-intensive service. Coaching an executive to be confident and on-message in front of a camera or journalist requires direct human observation, real-time feedback, and relationship trust. AI has very limited application here.",
     hints: {
       1: "Training sessions are scheduled per client need — before a major announcement, media tour, or crisis. Low frequency.",
@@ -634,8 +630,8 @@ const WORKFLOW_CONTEXT = {
       8: "Training sessions follow a general structure (prep, practice, debrief), but the content is entirely personalized.",
     }
   },
-  // id 9 = Thought Leadership
-  9: {
+  // id 8 = Content Marketing
+  8: {
     intro: "Thought leadership positioning requires strategic judgment about which topics, formats, and platforms will actually move the needle for a specific expert. AI can assist with content drafting and research at scale, but the positioning strategy and voice must be human.",
     hints: {
       1: "Active thought leadership programs produce content regularly — articles, commentary, social posts — relatively high volume.",
@@ -648,8 +644,8 @@ const WORKFLOW_CONTEXT = {
       8: "Thought leadership content follows structural conventions (POV, evidence, call to action) but voice is highly personal.",
     }
   },
-  // id 10 = Content Marketing
-  10: {
+  // id 8 = Content Marketing
+  8: {
     intro: "Content marketing — blogs, articles, newsletters — is high volume and relatively structured. It's one of the stronger AI candidates in the marketing suite, particularly for research-heavy or SEO-driven content. The critical variable is how distinctively the client's voice needs to come through.",
     hints: {
       1: "Regular publishing cadences — weekly blog posts, monthly newsletters — mean content volume is consistently high.",
@@ -662,8 +658,8 @@ const WORKFLOW_CONTEXT = {
       8: "Article structure (intro, body, CTA) and SEO formatting conventions are highly standardized across clients.",
     }
   },
-  // id 11 = Campaign Planning & Activation
-  11: {
+  // id 9 = Campaign Planning & Activation
+  9: {
     intro: "Campaign planning combines strategic judgment (what will resonate with this audience?) with operational execution (channel mix, budget, timeline). AI can assist with research, benchmarking, and performance analysis, but the core campaign strategy is human-led.",
     hints: {
       1: "Campaign planning cycles depend on client activity — quarterly or bi-annual for most clients. Moderate frequency.",
@@ -676,8 +672,8 @@ const WORKFLOW_CONTEXT = {
       8: "Campaign plans follow structural conventions but are highly customized per client, objective, and channel mix.",
     }
   },
-  // id 12 = Branding
-  12: {
+  // id 10 = Branding
+  10: {
     intro: "Branding is the most judgment-intensive marketing service. Brand identity — who you are, what you stand for, how you're perceived — requires deep listening, cultural sensitivity, and creative synthesis that AI cannot replicate. Expect a low score here. That's the correct answer.",
     hints: {
       1: "Brand development is a major engagement — once per client relationship, occasionally refreshed. Very low frequency.",
@@ -690,22 +686,8 @@ const WORKFLOW_CONTEXT = {
       8: "Every brand is intentionally unique — output standardization is the opposite of the goal.",
     }
   },
-  // id 13 = SEM / PPC Management
-  13: {
-    intro: "SEM and PPC are among the strongest AI candidates in the marketing stack. Campaign optimization is data-driven, repetitive, and highly measurable — exactly where AI tools already operate effectively. The strategic framing stays human; bid management, ad testing, and reporting are prime for AI assistance.",
-    hints: {
-      1: "Active SEM campaigns require daily monitoring, bid adjustments, and A/B testing — very high frequency.",
-      2: "Campaign structures, keyword lists, ad copy frameworks, and bid strategies follow consistent, replicable formats.",
-      3: "Click-through rate, conversion rate, cost-per-acquisition, and ROAS are immediately and precisely measurable.",
-      4: "Significant campaign changes are reviewed by account managers before going live. Automated bidding has guardrails.",
-      5: "Optimization is a data and volume problem — testing and adjusting dozens of variables across multiple client accounts.",
-      6: "Budget overspend or poor targeting has direct financial consequences, but changes can be made quickly.",
-      7: "Historical campaign data, keyword databases, competitor ad intelligence, and platform benchmarks are abundant.",
-      8: "Ad formats, campaign structures, and performance reports are highly standardized across platforms and clients.",
-    }
-  },
-  // id 14 = Email & Marketing Automation
-  14: {
+  // id 11 = Email & Marketing Automation
+  11: {
     intro: "Email and marketing automation is the highest-scoring service in this entire audit. High volume, structured templates, clear deliverability metrics, and automated workflows all align perfectly. The human role shifts from production to strategy and quality oversight.",
     hints: {
       1: "Automated sequences run continuously across client databases — welcome flows, nurtures, re-engagement. Volume is very high.",
@@ -718,8 +700,8 @@ const WORKFLOW_CONTEXT = {
       8: "Email templates, subject line conventions, and automation workflow structures are highly standardized.",
     }
   },
-  // id 15 = SEO & AIO
-  15: {
+  // id 12 = SEO & AIO
+  12: {
     intro: "SEO is a strong AI candidate — and AI optimization (AIO) makes it even more so, since AI tools now directly participate in both research and content optimization. Technical SEO and keyword-driven content are repetitive, data-driven, and measurable. Search strategy and editorial judgment stay human.",
     hints: {
       1: "Active SEO programs require regular content production, keyword monitoring, and technical audits — ongoing and frequent.",
@@ -732,8 +714,8 @@ const WORKFLOW_CONTEXT = {
       8: "SEO content follows clear optimization formulas: keyword placement, metadata, heading structure, internal linking.",
     }
   },
-  // id 16 = Design & Collateral (Creative)
-  16: {
+  // id 13 = Design & Collateral
+  13: {
     intro: "Design and collateral splits by type. Branded social graphics and templated materials score higher on AI suitability. Annual reports, campaign creative, and original visual concepts require design judgment and brand sensitivity that stays human.",
     hints: {
       1: "Social graphics and templated materials can be high volume. Annual reports and campaign assets are lower frequency.",
@@ -746,8 +728,8 @@ const WORKFLOW_CONTEXT = {
       8: "Templated collateral is highly standardized. Campaign creative and original design is not.",
     }
   },
-  // id 17 = Website Design & Development (Creative)
-  17: {
+  // id 14 = Website Design & Development
+  14: {
     intro: "Website development at Mueller follows a 6-step process: Discovery, Information Architecture, Content & Design, Build, SEO, and Testing & Launch. The strategy and design phases are judgment-heavy. The build and QA phases are more systematic and increasingly AI-assistable.",
     hints: {
       1: "Website builds are project-based — one per client engagement, with periodic updates. Very low frequency.",
@@ -760,8 +742,8 @@ const WORKFLOW_CONTEXT = {
       8: "The development process is standardized. Each site's design, copy, and navigation is unique.",
     }
   },
-  // id 18 = Website Content & Copy (Creative)
-  18: {
+  // id 15 = Website Content & Copy
+  15: {
     intro: "Website copywriting sits at the intersection of messaging strategy and SEO. It's more structured than brand copy but requires clear understanding of the client's voice, audience, and conversion goals. AI can assist with drafts and optimization — the strategic narrative must be human.",
     hints: {
       1: "Website copy is produced once per project, then updated periodically. Moderate frequency across a full client portfolio.",
@@ -772,20 +754,6 @@ const WORKFLOW_CONTEXT = {
       6: "Poor copy on a live website reflects directly on the client. Editable, but visible and reputation-affecting.",
       7: "Brand messaging documents, SEO briefs, competitor sites, and sitemap provide rich source material.",
       8: "Web copy follows page-type conventions (homepage, about, services, case studies) but voice and narrative are customized.",
-    }
-  },
-  // id 19 = Videography (Creative)
-  19: {
-    intro: "Video production is creative, judgment-intensive work where the story, style, and emotional tone are everything. AI can assist with scripting drafts, captioning, and post-production workflows — but directing, interviewing, and creative decision-making stay human.",
-    hints: {
-      1: "Video projects are episodic — a brand film or campaign series once or twice per client per year. Low frequency.",
-      2: "Creative briefs vary widely. Each production starts from a unique brief, vision, and client context.",
-      3: "Whether a video achieves its intended emotional or communicative effect is highly subjective.",
-      4: "Videos are reviewed extensively by the client at script, rough cut, and final stages before any distribution.",
-      5: "The bottleneck is creative judgment — story, tone, visual style, interview technique.",
-      6: "A published video that misrepresents the brand or contains errors is public and hard to correct quickly. High stakes.",
-      7: "Brand assets, key messages, past videos, and creative briefs provide context — but each project starts fresh.",
-      8: "Video formats (testimonial, brand story, event recap) have conventions, but creative execution is highly individual.",
     }
   },
 };
