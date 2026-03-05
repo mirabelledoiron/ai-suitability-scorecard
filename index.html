@@ -595,75 +595,75 @@ const WORKFLOW_CONTEXT = {
 
 const CRITERIA = [
   {
-    id: 1, title: "Repetition Frequency", risk: false,
-    sub: "AI earns its cost through volume — low-frequency tasks don't justify the overhead",
+    id: 1, title: "How often does this workflow happen?", risk: false,
+    sub: "AI only makes sense for tasks you do repeatedly — rare work doesn't justify the setup.",
     opts: [
-      { label: "Happens 10+ times per week", score: 5 },
-      { label: "Happens 3–9 times per week", score: 3 },
-      { label: "Happens 1–2 times per week or irregularly", score: 1 },
+      { label: "Constantly — 10 or more times a week", score: 5 },
+      { label: "Regularly — a few times a week", score: 3 },
+      { label: "Occasionally — once a week or less", score: 1 },
     ]
   },
   {
-    id: 2, title: "Input Structure", risk: false,
-    sub: "Consistent inputs produce predictable outputs — freeform inputs don't",
+    id: 2, title: "What does the starting point look like each time?", risk: false,
+    sub: "AI produces better results when it's always working from the same type of material.",
     opts: [
-      { label: "Consistent format, template, or field structure every time", score: 5 },
-      { label: "Partially structured with some variation", score: 3 },
-      { label: "Freeform, verbal, or varies significantly each time", score: 1 },
+      { label: "Always the same — a form, template, or consistent format", score: 5 },
+      { label: "Roughly similar, but varies case by case", score: 3 },
+      { label: "Different every time — a call, email, or freeform notes", score: 1 },
     ]
   },
   {
-    id: 3, title: "Output Verifiability", risk: false,
-    sub: "If you can't tell when the AI is wrong, errors become invisible",
+    id: 3, title: "When the task is done, how do you know if it's right?", risk: false,
+    sub: "If there's no clear way to check the result, errors can pass through unnoticed.",
     opts: [
-      { label: "Clear right/wrong — easy for anyone to verify", score: 5 },
-      { label: "Requires domain expertise to verify", score: 3 },
-      { label: "Subjective — no clear standard for correctness", score: 1 },
+      { label: "Easy to check — there's a clear right or wrong answer", score: 5 },
+      { label: "Needs experience to judge — only an expert can tell", score: 3 },
+      { label: "It's a judgment call — reasonable people might disagree", score: 1 },
     ]
   },
   {
-    id: 4, title: "Error Catchability", risk: true,
-    sub: "Errors reaching clients before human review are the most dangerous AI failure mode",
+    id: 4, title: "Does a human review the result before the client sees it?", risk: true,
+    sub: "This is the most critical safety check. If AI output goes straight to a client with no review, mistakes become your problem immediately.",
     opts: [
-      { label: "A human always reviews the output before it is used", score: 5 },
-      { label: "Output is sometimes reviewed depending on context", score: 3 },
-      { label: "Output goes directly to a client, system, or external process", score: 1 },
+      { label: "Always — someone checks it before it goes out", score: 5 },
+      { label: "Sometimes — depends on the situation", score: 3 },
+      { label: "No — it goes directly to the client or into a live system", score: 1 },
     ]
   },
   {
-    id: 5, title: "Bottleneck Type", risk: false,
-    sub: "AI solves throughput problems — it does not solve judgment problems",
+    id: 5, title: "When this workflow is slow or painful, what's the real reason?", risk: false,
+    sub: "AI is good at handling volume. It's not good at replacing judgment or knowing a client well.",
     opts: [
-      { label: "Volume — too many instances to handle fast enough", score: 5 },
-      { label: "Mixed — partly volume, partly complexity", score: 3 },
-      { label: "Judgment, relationship, or contextual nuance", score: 1 },
+      { label: "Too much of it — not enough time to get through it all", score: 5 },
+      { label: "Both — volume is a problem and figuring out the right approach is too", score: 3 },
+      { label: "It requires careful thinking, expertise, or knowing the client personally", score: 1 },
     ]
   },
   {
-    id: 6, title: "Stakes of Error", risk: true,
-    sub: "High-consequence errors outweigh efficiency gains — humans must own high-stakes outputs",
+    id: 6, title: "What happens if something goes wrong?", risk: true,
+    sub: "The higher the consequence, the more a human needs to own the outcome — not a tool.",
     opts: [
-      { label: "Internal, low-stakes, and easily corrected", score: 5 },
-      { label: "Moderate impact but recoverable", score: 3 },
-      { label: "Legal, compliance, financial, or reputational consequences", score: 1 },
+      { label: "Low stakes — internal, easy to fix, no one outside the team is affected", score: 5 },
+      { label: "Moderate — awkward or costly, but recoverable", score: 3 },
+      { label: "Serious — could damage the client relationship, reputation, or create legal issues", score: 1 },
     ]
   },
   {
-    id: 7, title: "Data Availability", risk: false,
-    sub: "AI needs context — without existing data or examples, you're building blind",
+    id: 7, title: "Do you have past examples or material to work from?", risk: false,
+    sub: "AI needs something to reference or learn from. Starting from scratch every time is a weak signal.",
     opts: [
-      { label: "Rich data, prior examples, or documentation already exists", score: 5 },
-      { label: "Some data exists but incomplete or scattered", score: 3 },
-      { label: "No usable data — starting from scratch", score: 1 },
+      { label: "Yes — past examples, templates, and documentation already exist", score: 5 },
+      { label: "Some — there's material but it's incomplete or scattered", score: 3 },
+      { label: "No — every time starts from a blank page", score: 1 },
     ]
   },
   {
-    id: 8, title: "Output Standardization", risk: false,
-    sub: "Templated outputs are AI-friendly — highly personal outputs aren't",
+    id: 8, title: "Does the final result follow a predictable structure?", risk: false,
+    sub: "If outputs look roughly the same every time, AI can help produce them. Unique, personal outputs are much harder.",
     opts: [
-      { label: "Output is templated or highly standardized", score: 5 },
-      { label: "Output follows loose conventions but varies", score: 3 },
-      { label: "Highly personal, creative, or relationship-dependent", score: 1 },
+      { label: "Yes — same structure every time, almost like filling in a template", score: 5 },
+      { label: "Mostly — a similar shape but meaningfully customised each time", score: 3 },
+      { label: "No — every output is unique, personal, or creative", score: 1 },
     ]
   },
 ];
