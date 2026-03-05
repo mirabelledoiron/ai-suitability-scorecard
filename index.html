@@ -338,6 +338,14 @@
       font-weight: 700;
       margin-bottom: 4px;
     }
+    .source-title a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: #ccc;
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.15s;
+    }
+    .source-title a:hover { text-decoration-color: #1a1a1a; }
     .source-meta {
       font-size: 11px;
       color: #999;
@@ -1081,25 +1089,25 @@ function renderMethodology() {
       <h2>Academic & Industry Sources</h2>
 
       <div class="source-card">
-        <div class="source-title">Brynjolfsson, E. &amp; Mitchell, T. — "What Can Machines Learn, and What Does It Mean for Occupations and the Economy?"</div>
-        <div class="source-meta">Science, Vol. 358, 2017 · MIT &amp; Stanford</div>
+        <div class="source-title"><a href="https://www.aeaweb.org/articles?id=10.1257/pandp.20181019" target="_blank" rel="noopener">Brynjolfsson, E. &amp; Mitchell, T. — "What Can Machines Learn, and What Does It Mean for Occupations and the Economy?"</a></div>
+        <div class="source-meta">AEA Papers &amp; Proceedings, Vol. 108, 2018 · MIT &amp; Stanford</div>
         <div class="source-body">Identified task-level characteristics that predict suitability for machine learning automation: structured inputs, well-defined outputs, access to training data, and repetition. Directly informs Criteria 1 (Repetition), 2 (Input Structure), 3 (Output Verifiability), and 7 (Data Availability).</div>
       </div>
 
       <div class="source-card">
-        <div class="source-title">McKinsey Global Institute — "A Future That Works: Automation, Employment, and Productivity"</div>
+        <div class="source-title"><a href="https://www.mckinsey.com/featured-insights/digital-disruption/harnessing-automation-for-a-future-that-works" target="_blank" rel="noopener">McKinsey Global Institute — "A Future That Works: Automation, Employment, and Productivity"</a></div>
         <div class="source-meta">McKinsey &amp; Company, 2017</div>
         <div class="source-body">Analyzed automation potential across 800+ occupations. Key finding: the strongest predictors of automation suitability are physical or cognitive routine-ness, data availability, and whether outputs are predictable. Informs Criteria 5 (Bottleneck Type) and 8 (Output Standardization).</div>
       </div>
 
       <div class="source-card">
-        <div class="source-title">Autor, D. — "Why Are There Still So Many Jobs? The History and Future of Workplace Automation"</div>
+        <div class="source-title"><a href="https://www.aeaweb.org/articles?id=10.1257/jep.29.3.3" target="_blank" rel="noopener">Autor, D. — "Why Are There Still So Many Jobs? The History and Future of Workplace Automation"</a></div>
         <div class="source-meta">Journal of Economic Perspectives, 2015 · MIT</div>
         <div class="source-body">Distinguished between routine tasks (automatable) and non-routine judgment tasks (resistant to automation). Established that the bottleneck type — volume vs. judgment — is the critical variable. Directly informs Criterion 5 (Bottleneck Type).</div>
       </div>
 
       <div class="source-card">
-        <div class="source-title">Gartner AI Readiness Framework</div>
+        <div class="source-title"><a href="https://www.gartner.com/en/information-technology/topics/ai-readiness" target="_blank" rel="noopener">Gartner AI Readiness Framework</a></div>
         <div class="source-meta">Gartner Research, multiple editions</div>
         <div class="source-body">Enterprise AI adoption framework that weights human oversight, error consequence management, and governance as prerequisites for deployment. Informs Criteria 4 (Error Catchability) and 6 (Stakes of Error), and the Risk Override rule.</div>
       </div>
