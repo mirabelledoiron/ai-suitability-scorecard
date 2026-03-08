@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Suitability Scorecard — Mueller Communications</title>
+  <title>AI Suitability Scorecard — Template</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -553,25 +553,32 @@
 </div>
 
 <script>
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  CUSTOMIZE YOUR WORKFLOWS HERE                                  ║
+// ║                                                                  ║
+// ║  Replace each Process with your own workflow names.              ║
+// ║  - id: unique number (keep sequential)                           ║
+// ║  - group: sidebar category label (change to your own categories) ║
+// ║  - title: workflow name shown in sidebar and page header         ║
+// ║  - desc: short description shown below the title                 ║
+// ║                                                                  ║
+// ║  You can add or remove workflows. Just keep ids unique and       ║
+// ║  update WORKFLOW_CONTEXT below to match.                         ║
+// ╚══════════════════════════════════════════════════════════════════╝
 const WORKFLOWS = [
-  // PR
-  { id: 1,  group: "PR",        title: "Media Relations",                 desc: "Pitching stories, managing journalist relationships, securing coverage" },
-  { id: 2,  group: "PR",        title: "Crisis Communications",           desc: "Rapid response, reputation protection, stakeholder messaging under pressure" },
-  { id: 3,  group: "PR",        title: "Public Affairs & Community",      desc: "Advocacy, government relations, grassroots campaigns, referendums" },
-  { id: 4,  group: "PR",        title: "Messaging & Content Development", desc: "Brand narratives, StoryBrand sessions, content platforms, key messages" },
-  { id: 5,  group: "PR",        title: "Social Media",                    desc: "Organic social, community management, digital presence for PR clients" },
-  { id: 6,  group: "PR",        title: "Employee Engagement & Change",    desc: "Internal communications during transitions, org change, staff alignment" },
-  { id: 7,  group: "PR",        title: "Spokesperson Training",           desc: "Media coaching, message preparation, executive interview readiness" },
-  // Marketing
-  { id: 8,  group: "Marketing", title: "Content Marketing",               desc: "Blogs, articles, newsletters — content that attracts and retains audience" },
-  { id: 9,  group: "Marketing", title: "Campaign Planning & Activation",  desc: "Multi-channel campaign strategy, design, and rollout" },
-  { id: 10, group: "Marketing", title: "Branding",                        desc: "Brand identity development and refinement — visual and verbal" },
-  { id: 11, group: "Marketing", title: "Email & Marketing Automation",    desc: "Automated workflows, nurture sequences, and email campaign management" },
-  { id: 12, group: "Marketing", title: "SEO & AIO",                       desc: "Organic search optimization and AI-driven search presence" },
-  // Creative
-  { id: 13, group: "Creative",  title: "Design & Collateral",             desc: "Branded materials, reports, digital assets, visual communications" },
-  { id: 14, group: "Creative",  title: "Website Design & Development",    desc: "Discovery, IA, design, build, QA, and launch — full site delivery" },
-  { id: 15, group: "Creative",  title: "Website Content & Copy",          desc: "Web copy, narrative structure, and page-level messaging" },
+  // Category 1
+  { id: 1,  group: "Category 1", title: "Process A", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 2,  group: "Category 1", title: "Process B", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 3,  group: "Category 1", title: "Process C", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 4,  group: "Category 1", title: "Process D", desc: "Describe this workflow — what it involves and who does it" },
+  // Category 2
+  { id: 5,  group: "Category 2", title: "Process E", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 6,  group: "Category 2", title: "Process F", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 7,  group: "Category 2", title: "Process G", desc: "Describe this workflow — what it involves and who does it" },
+  // Category 3
+  { id: 8,  group: "Category 3", title: "Process H", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 9,  group: "Category 3", title: "Process I", desc: "Describe this workflow — what it involves and who does it" },
+  { id: 10, group: "Category 3", title: "Process J", desc: "Describe this workflow — what it involves and who does it" },
 ];
 
 const WORKFLOW_CONTEXT = {
